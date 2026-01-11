@@ -1,0 +1,30 @@
+[0m19:36:23.005018 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000185DD6D4D70>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000185DE81BED0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000185DE81BB10>]}
+
+
+============================== 19:36:23.010121 | 4f06d716-c173-442d-9b7b-34fde4e926c0 ==============================
+[0m19:36:23.010121 [info ] [MainThread]: Running with dbt=1.11.2
+[0m19:36:23.010771 [debug] [MainThread]: running dbt with arguments {'version_check': 'True', 'no_print': 'None', 'static_parser': 'True', 'target_path': 'None', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'printer_width': '80', 'write_json': 'True', 'empty': 'None', 'log_cache_events': 'False', 'introspect': 'True', 'cache_selected_only': 'False', 'fail_fast': 'False', 'debug': 'False', 'log_format': 'default', 'partial_parse': 'True', 'send_anonymous_usage_stats': 'True', 'quiet': 'False', 'warn_error': 'None', 'profiles_dir': 'C:\\Users\\schum\\.dbt', 'indirect_selection': 'eager', 'invocation_command': 'dbt init olist_transform', 'use_colors': 'True', 'use_experimental_parser': 'False', 'log_path': 'logs'}
+[0m19:36:23.024548 [info ] [MainThread]: Creating dbt configuration folder at C:\Users\schum\.dbt
+[0m19:36:23.026724 [debug] [MainThread]: Starter project path: c:\Users\schum\Desktop\olist_etl\.venv\Lib\site-packages\dbt\include\starter_project
+[0m19:36:23.049399 [info ] [MainThread]: 
+Your new dbt project "olist_transform" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m19:36:23.050328 [info ] [MainThread]: Setting up your profile.
+[0m19:37:42.060617 [info ] [MainThread]: Profile olist_transform written to C:\Users\schum\.dbt\profiles.yml using target's profile_template.yml and your supplied values. Run 'dbt debug' to validate the connection.
+[0m19:37:42.061682 [debug] [MainThread]: Command `dbt init` succeeded at 19:37:42.061539 after 79.15 seconds
+[0m19:37:42.061953 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000185DF9B5940>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000185DF9E04D0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000185DE68BDF0>]}
+[0m19:37:42.062212 [debug] [MainThread]: Flushing usage events
+[0m19:37:42.760319 [debug] [MainThread]: An error was encountered while trying to flush usage events
