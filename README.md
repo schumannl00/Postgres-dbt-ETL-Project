@@ -24,3 +24,6 @@ The goal of this project is to transform raw e-commerce data from Olist (9+ rela
 - [ ] dbt transformation models (Fact/Dimension tables)
 - [ ] Streamlit integration for Business Intelligence
 - [ ] Dockerization for one-click deployment
+
+# Data 
+I used the Brazilian E-Commerce Public Dataset by Olist from Kaggle. See https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce?resource=download and download the 9 csv files into the data/ directory in your prefered way.  
