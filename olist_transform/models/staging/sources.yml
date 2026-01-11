@@ -6,6 +6,12 @@ sources:
     schema: raw
     tables:
       - name: orders
+        description: "Raw order data from Olist"
+        columns:
+          - name: order_id
+            tests:
+              - unique
+              - not_null
       - name: order_items
       - name: customers
       - name: products
