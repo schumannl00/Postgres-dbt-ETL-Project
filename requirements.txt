@@ -60,3 +60,11 @@ typing_extensions==4.15.0
 tzdata==2025.3
 urllib3==2.6.3
 zipp==3.23.0
+dbt-core
+dbt-postgres
+dbt-adapters
+protobuf>=6.0.0
+pandas
+sqlalchemy
+psycopg2-binary
+python-dotenv

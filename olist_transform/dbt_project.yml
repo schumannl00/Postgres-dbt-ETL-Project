@@ -30,7 +30,10 @@ clean-targets:         # directories to be removed by `dbt clean`
 # directory as views. These settings can be overridden in the individual model
 # files using the `{{ config(...) }}` macro.
 models:
-  olist_transform:
-    # Config indicated by + and applies to all files under models/example/
-    example:
-      +materialized: view
+  olist_transform: # This must match the 'name:' at the top of this file
+    staging:
+      +materialized: view      # Staging models are lightweight views
+    intermediate:
+      +materialized: ephemeral # These are "invisible" CTEs (optional)
+    marts:
+      +materialized: table     # Fact and Dim tables are physical tables

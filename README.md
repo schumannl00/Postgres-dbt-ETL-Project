@@ -15,7 +15,7 @@ The goal of this project is to transform raw e-commerce data from Olist (9+ rela
 
 ## 🏗️ Architecture
 1. **Raw Layer:** Python scripts extract CSV data and load them into a `raw` schema in Postgres using high-performance batch inserts.
-2. **Analytics Layer (dbt):** Transforming raw data into cleaned Fact and Dimension tables (SCD Type 2 logic where applicable).
+2. **Analytics Layer (dbt):** Transforming raw data into cleaned Fact and Dimension tables (SCD Type 2 logic where applicable).s
 3. **Visualization:** Streamlit dashboard for interactive EDA.
 
 ## 📈 Roadmap

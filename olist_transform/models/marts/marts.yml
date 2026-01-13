@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: fct_orders
+    description: "The central fact table containing one row per order with aggregated financial metrics."
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+
+         
+
+  - name: dim_products
+    description: "Product dimension enriched with English category names and calculated volume."
+    columns:
+      - name: product_id
+        tests:
+          - unique
+          - not_null
+
+  - name: monthly_revenue
+    description: "Aggregated monthly revenue and order counts by order status."
+    columns: 
+      - name: order_month
+        tests: 
+          - not_null
+          - unique
+      - name: revenue
+        tests: 
+          - not_null
