@@ -9,7 +9,7 @@ The goal of this project is to transform raw e-commerce data from Olist (9+ rela
 ### Current Tech Stack
 - **Language:** Python 3.13 
 - **Database:** PostgreSQL (Relational Modeling)
-- **Extraction:** SQLAlchemy 2.0 & Psycopg3 (Batch loading with dynamic chunking)
+- **Extraction:** SQLAlchemy 2.0 & Psycopg2 (Batch loading with dynamic chunking)
 - **Transformation:** dbt (Data Build Tool) - *[In Progress]*
 - **Orchestration:** TBD (Planned: Docker)
 
@@ -21,7 +21,7 @@ The goal of this project is to transform raw e-commerce data from Olist (9+ rela
 ## 📈 Roadmap
 - [x] Initial ETL pipeline from CSV to Postgres
 - [x] Dynamic parameter-limit handling for wide tables
-- [ ] dbt transformation models (Fact/Dimension tables)
+- [x] dbt transformation models (Fact/Dimension tables)
 - [ ] Streamlit integration for Business Intelligence
 - [ ] Dockerization for one-click deployment
 

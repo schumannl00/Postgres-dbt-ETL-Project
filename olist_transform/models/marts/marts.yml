@@ -29,3 +29,11 @@ models:
       - name: revenue
         tests: 
           - not_null
+
+  - name: dim_customers
+    description: "Customer dimension table with calculated Lifetime Value (LTV) and segmentation."
+    columns:
+      - name: customer_unique_id
+        tests:
+          - unique
+          - not_null
