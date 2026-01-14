@@ -30,10 +30,83 @@ models:
         tests: 
           - not_null
 
-  - name: dim_customers
+  - name: dim_customer
     description: "Customer dimension table with calculated Lifetime Value (LTV) and segmentation."
     columns:
       - name: customer_unique_id
         tests:
           - unique
           - not_null
+
+  - name: product_cost_decomposition
+    description: "Analytical model for identifying pricing anomalies and seller behavior using Z-scores and volatility metrics."
+    columns:
+      - name: product_id
+        description: "Primary key for the product."
+        tests:
+          - not_null
+          - unique
+
+      - name: category
+        description: "English category name used for partitioning window functions."
+        tests:
+          - not_null
+
+      - name: total_cost_z_score
+        description: "Statistical Z-score of total cost relative to its category peers."
+        #might add test for range later
+
+      - name: reliability_score
+        description: "Categorization of data density (High, Low, or New)."
+        tests:
+          - accepted_values:
+              values: ['High Confidence', 'Low Confidence', 'Single Sale']
+
+      - name: is_price_rebalanced
+        description: "Boolean flag for products where price and freight volatility cancel out."
+        tests:
+          - not_null
+          - accepted_values:
+              values: [True, False]
+
+      - name: avg_total_cost
+        description: "The base metric for all cost calculations."
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              inclusive: true
+
+  - name: customer_retention
+    description: "Model to analyze customer purchase behavior and retention over time."
+    columns:
+      - name: customer_unique_id
+        description: "Unique identifier for each customer."
+        tests:
+          - not_null
+
+      
+
+      - name: order_sequence
+        description: "The ordinal rank of the order for this customer."
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 1
+
+      - name: lifecycle_stage
+        tests:
+          - accepted_values:
+              values: ['Repeat Transaction', 'Lapsed (One-Time)', 'New (Potential Repeat)', 'Initial Purchase (Loyalist)', 'No Order']
+
+      - name: days_between_orders
+        description: "Should be NULL for the first order, and >= 0 for subsequent orders."
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+              where: "order_sequence > 1"
+
+      - name: order_id
+        description: "Unique identifier for each order."
+        tests:
+          - not_null
+          - unique 
