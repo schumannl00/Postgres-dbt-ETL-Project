@@ -22,7 +22,7 @@ The goal of this project is to transform raw e-commerce data from Olist (9+ rela
 - [x] Initial ETL pipeline from CSV to Postgres
 - [x] Dynamic parameter-limit handling for wide tables
 - [x] dbt transformation models (Fact/Dimension tables)
-- [ ] Streamlit integration for Business Intelligence
+- [x] Streamlit integration for Business Intelligence
 - [ ] Dockerization for one-click deployment
 
 # Data 

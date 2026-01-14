@@ -37,7 +37,7 @@ retention_calc as (
 final_calculations as (
     select
         *,
-        extract(day from (purchase_at - previous_order_at)) as days_between_orders,
+        extract(epoch from (purchase_at - previous_order_at))/ 86400 as days_between_orders,
         extract(day from (max_data_date - purchase_at)) as recency_days
     from retention_calc
 )
@@ -48,7 +48,7 @@ select
     previous_order_at,
     coalesce(order_sequence, 0) as order_sequence,
     coalesce(total_customer_orders, 0) as total_customer_orders,
-    days_between_orders,
+    round(days_between_orders, 2) as days_between_orders,
     recency_days,
     
     -- Lifecycle logic using our clean alias
