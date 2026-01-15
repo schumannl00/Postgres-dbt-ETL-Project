@@ -42,6 +42,7 @@ Run the provided setup script to fetch the latest data from Kaggle and place it 
 ```bash
 python scripts/setup_data.py 
 ``` 
+If that is not possible, try directly on https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce?resource=download and place it in `data/`. 
 
 ### 2. Configure Environment
 Copy the example environment file and add your database credentials:
