@@ -16,7 +16,7 @@ The system is fully containerized using **Docker Compose**, ensuring a "one-clic
 3.  **Analytics & Visualization (Streamlit):** An interactive dashboard that queries the `analytics` layer to provide:
     * **Product Anomaly Detection:** Identifying outliers in product dimensions using Unsupervised ML (Isolation Forest/Z-Score).
     * **Pareto Analysis:** Identifying the top 20% of products/categories driving 80% of revenue.
-    * **Customer Insights:** Geo-spatial mapping and customer retention metrics.
+    * **Customer Insights:** Customer retention metrics and purchasing behavior
 
 
 
@@ -24,9 +24,9 @@ The system is fully containerized using **Docker Compose**, ensuring a "one-clic
 * **Database:** PostgreSQL 15
 * **Transformation:** dbt-core & dbt-postgres
 * **App/Dashboard:** Streamlit
-* **Language:** Python 3.11
+* **Language:** Python 3.13 (3.11+ should work as well)
 * **Containerization:** Docker & Docker Compose
-* **Library Highlights:** SQLAlchemy 2.0, Psycopg3, Pandas, Scikit-Learn
+* **Library Highlights:** SQLAlchemy 2.0, Psycopg2, Pandas, Scikit-Learn
 
 ---
 
@@ -40,23 +40,25 @@ The system is fully containerized using **Docker Compose**, ensuring a "one-clic
 ### 1. Download the Data
 Run the provided setup script to fetch the latest data from Kaggle and place it in the local `data/` directory:
 ```bash
-python scripts/setup_data.py ```
+python scripts/setup_data.py 
+``` 
 
-
-2. Configure Environment
+### 2. Configure Environment
 Copy the example environment file and add your database credentials:
 
-Bash
 
+```
 cp .env.example .env
+``` 
 Note: Ensure DB_HOST is set to db for Docker internal networking.
 
 3. Launch the Suite
 Execute the following command to build the containers, load the data, run dbt transforms, and launch the dashboard:
 
-Bash
 
+```
 docker-compose up --build
+```
 Access the Dashboard: Once the logs indicate Streamlit is running, navigate to http://localhost:8501.
 
 📈 Key Analytical Features
