@@ -3,10 +3,10 @@
 
 
 
-## 🚀 Overview
+##  Overview
 This project provides a production-ready analytics environment for the Brazilian Olist E-Commerce dataset. It automates the entire lifecycle of data: from raw CSV ingestion to multi-layered dbt transformations, culminating in an interactive Streamlit dashboard featuring **Unsupervised Machine Learning** for anomaly detection and **Pareto (80/20) business analysis**.
 
-## 🏗️ Architecture
+##  Architecture
 The system is fully containerized using **Docker Compose**, ensuring a "one-click" deployment that handles networking between the application and the database.
 
 1.  **Extraction & Load (Python):** Custom SQLAlchemy 2.0 scripts with dynamic chunking to handle high-volume relational data into a `raw` PostgreSQL schema.
@@ -20,7 +20,7 @@ The system is fully containerized using **Docker Compose**, ensuring a "one-clic
 
 
 
-## 🛠️ Tech Stack
+##  Tech Stack
 * **Database:** PostgreSQL 15
 * **Transformation:** dbt-core & dbt-postgres
 * **App/Dashboard:** Streamlit
@@ -30,7 +30,7 @@ The system is fully containerized using **Docker Compose**, ensuring a "one-clic
 
 ---
 
-## 🚦 Getting Started
+##  Getting Started
 
 ### Prerequisites
 * [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running.
@@ -63,12 +63,12 @@ docker-compose up --build
 Access the Dashboard: Once the logs indicate Streamlit is running, navigate to http://localhost:8501.
 
 📈 Key Analytical Features
-🤖 Unsupervised ML: Product Anomalies
+Unsupervised ML: Product Anomalies
 The pipeline includes a specialized Mart that applies machine learning (Isolation Forest) to identify products with unusual price-to-shipping-cost ratios or pricing outliers. This helps businesses identify potential shipping cost errors or data entry mistakes.
 
 
-🎯 Pareto (80/20) Logic
+Pareto (80/20) Logic
 Automated SQL models calculate the cumulative revenue contribution of every product category, allowing stakeholders to instantly see which segments are the core drivers of the business.
 
-🧑‍🦰 Customer Insights
+Customer Insights
 Overall Retention rate of customers, how many where likely one-time customers and are lost, times till last puchase based on cutoff date, time between purchases (where purchases that are just one hour apart are lumped together).
