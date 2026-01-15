@@ -53,7 +53,10 @@ if len(ml_ready) > 10:
     model = IsolationForest(contamination=contamination, random_state=42)
     ml_ready['anomaly_score'] = model.fit_predict(ml_ready[features].fillna(0))
     ml_ready['Result'] = ml_ready['anomaly_score'].map({1: 'Normal', -1: 'Anomaly'})
-    
+    df_final = filtered_df.merge(
+        ml_ready[['product_id', 'Result']], on='product_id', how='left')
+    df_final['Result'] = df_final['Result'].fillna('Single sale - No Analysis')
+    assert len(df_final) == len(filtered_df), "Merge error: Row counts do not match after ML labeling."
     # --- UI LAYOUT ---
     col1, col2 = st.columns([2, 1])
 
@@ -93,14 +96,62 @@ if len(ml_ready) > 10:
             """)
 
     # 5. Detail Table
+  
+    
+    st.subheader("🎯 Pareto Category Analysis")
+
+    # Since the math is in SQL, we just count
+    total_products = len(filtered_df)
+    top_80_df = filtered_df[filtered_df['is_revenue_workhorse'] == True]
+    top_80_count = len(top_80_df)
+
+    col1, col2 = st.columns(2)
+    col1.metric("Products driving 80% Revenue", top_80_count)
+    col2.metric("% of Inventory", f"{(top_80_count/total_products)*100:.1f}%")
+
+    st.write(f"In your selected categories: {' , '.join(map(str, selected_cat))} , **{top_80_count}** products generate 80% of the total revenue.")
+    
+    # --- High Priority Audit Section ---
     st.markdown("---")
-    st.subheader("🚩 High Priority Items for Review")
-    st.dataframe(
-        ml_ready[ml_ready['Result'] == 'Anomaly'].sort_values('total_cost_z_score', ascending=False),
-        width='stretch'
+    st.subheader("🚩 High Priority Audit: Revenue Workhorses & Anomalies")
+
+    # Filter logic: Let the user decide if they want to see everything or just the 'Big Fish'
+    show_only_pareto = st.toggle("Filter for Revenue Workhorses (Top 80% Rev Only)", value=False)
+    show_only_outliers = st.toggle("Show Only Anomalies", value=False)
+    # Prepare the view
+    audit_df = df_final.sort_values('product_revenue_share_pct', ascending=False).copy()
+    if show_only_pareto:
+        audit_df = audit_df[audit_df['is_revenue_workhorse'] == True]
+    if show_only_outliers:
+        audit_df = audit_df[audit_df['Result'] == 'Anomaly']
+
+    
+
+    # Render with improved formatting
+    st.data_editor(
+        audit_df[[
+            "product_id", "category", "Result", "is_revenue_workhorse", 
+            "product_revenue_share_pct", "avg_price", "total_cost_z_score", "sales_count", "is_price_rebalanced"
+        ]],
+        column_config={
+            "Result": st.column_config.TextColumn("Audit Status"),
+            "is_revenue_workhorse": st.column_config.CheckboxColumn("80/20 Workhorse", ),
+            "product_revenue_share_pct": st.column_config.ProgressColumn(
+                "Revenue Percentile",
+                help="How much this specific product contributes to the category's total sales revenue.",
+                format="%.2f",
+                min_value=0,
+                max_value=100,
+            ),
+            "avg_price": st.column_config.NumberColumn("Avg Price", format="$%.2f"),
+            "total_cost_z_score": st.column_config.NumberColumn("Volatility (Z-Score)", format="%.2f"), 
+            "is_price_rebalanced": st.column_config.CheckboxColumn("Price Rebalance Candidate", help="Flagged for potential price adjustment based on cost anomalies."),
+        },
+        disabled=True, # Keeps it as a view-only table
+        width='stretch', hide_index=True
     )
 else:
-    st.info("Not enough data in the selected category to run Anomaly Detection.")    
+    st.info("Not enough data in the selected category to run Anomaly Detection. Minimum 10 products with more than one sale required.")    
     
     
     

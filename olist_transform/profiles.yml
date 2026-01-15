@@ -1,0 +1,13 @@
+olist_transform:
+  outputs:
+    dev:
+      type: postgres
+      # Note: 'db' matches the service name in docker-compose.yml
+      host: "{{ env_var('DB_HOST') }}"
+      user: "{{ env_var('DB_USER') }}"
+      pass: "{{ env_var('DB_PASS') }}"
+      port: 5432
+      dbname: "{{ env_var('DB_NAME') }}"
+      schema: analytics
+      threads: 4
+  target: dev

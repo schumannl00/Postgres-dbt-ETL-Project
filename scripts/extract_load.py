@@ -1,7 +1,7 @@
 import os
 import time
 import pandas as pd
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from dotenv import load_dotenv
 from functools import wraps
 from urllib.parse import quote_plus
@@ -35,34 +35,38 @@ def timer(func):
 def load_all_data():
     """Loops through data directory and loads all CSVs into Postgres 'raw' schema."""
     
+    # --- STEP 1: INITIALIZE SCHEMAS ONCE ---
+    with engine.connect() as conn:
+        print("🛠️ Preparing Database: Creating schemas 'raw' and 'analytics'...")
+        conn.execute(text("CREATE SCHEMA IF NOT EXISTS raw;"))
+        conn.execute(text("CREATE SCHEMA IF NOT EXISTS analytics;"))
+        conn.commit() # Close this initialization transaction
+    
     if not os.path.exists(DATA_DIR):
         print(f"Error: Directory {DATA_DIR} not found.")
         return
 
     files = [f for f in os.listdir(DATA_DIR) if f.endswith('.csv')]
-    
     if not files:
         print("No CSV files found to load.")
         return
 
     print(f"Found {len(files)} files. Starting load...")
 
+    # --- STEP 2: LOOP THROUGH FILES ---
     for file in files:
-        # 1. Generate table name from filename (e.g., 'olist_orders_dataset.csv' -> 'orders')
-        # Custom logic: removing 'olist_' prefix and '_dataset' suffix for cleaner DB names
         table_name = file.replace('olist_', '').replace('_dataset.csv', '').replace('.csv', '')
-        
         file_path = os.path.join(DATA_DIR, file)
         
-        print(f"Processing: {file} -> raw.{table_name}")
+        print(f"🚀 Processing: {file} -> raw.{table_name}")
         
-        # 2. Extract
         df = pd.read_csv(file_path)
-        
-        # 3. Transform (Basic cleaning for SQL compatibility)
         df.columns = [c.lower().replace(' ', '_').replace('.', '_') for c in df.columns]
+        
+        # Calculate safe chunk size
         safe_chunksize = 60000 // len(df.columns)
-        # 4. Load (SQLAlchemy 2.0 transaction)
+        
+        # --- STEP 3: LOAD DATA (Let begin() handle the transaction) ---
         with engine.begin() as conn:
             df.to_sql(
                 name=table_name,
@@ -73,7 +77,8 @@ def load_all_data():
                 chunksize=safe_chunksize,
                 method='multi'
             )
-        print(f"Loaded {len(df)} rows.")
+        print(f"✅ Loaded {len(df)} rows.")
 
 if __name__ == "__main__":
     load_all_data()
+

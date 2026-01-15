@@ -1,0 +1,33 @@
+
+services:
+  db:
+    image: postgres:15
+    container_name: olist_db
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: olist_analytics_suite
+    depends_on:
+      - db
+    env_file: .env
+    environment:
+      - DB_HOST=db
+      - DB_PROFILES_DIR=/app/olist_transform # Important: dbt profiles.yml must use 'db' as host
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./data:/app/data # Mounts local data folder to container
+    entrypoint: /app/entrypoint.sh
+    restart: always
+
+
+volumes:
+  postgres_data:

@@ -39,15 +39,43 @@ category_analysis as (
             then True else False 
         end as is_price_rebalanced
     from product_base_stats
-)
+), 
 
-select
-    *,
+final_feature_engineering as (
+    select 
+        *,
     -- Z-Score for the Total Cost
     (avg_total_cost - cat_avg_total_cost) / nullif(cat_stddev_total_cost, 0) as total_cost_z_score,
     
     -- Deviation from Category Freight Norm
     -- (e.g., Is shipping this item way more expensive than other items in the same category?)
     (freight_share_pct - cat_avg_freight_share) as freight_pct_diff_from_avg,
-    total_cost_volatility / nullif(avg_total_cost, 0) as total_cost_cv
-from category_analysis
+    total_cost_volatility / nullif(avg_total_cost, 0) as total_cost_cv, 
+    (avg_price * sales_count) as product_revenue
+    from category_analysis
+),
+
+pareto_analysis as (
+    select
+        *,
+        -- Running total within the category (The "Pareto Line")
+        sum(avg_price * sales_count) over (
+            partition by category 
+            order by (avg_price * sales_count) desc
+        ) as cumulative_category_revenue,
+        -- Total category revenue for percentage calculation
+        sum(avg_price * sales_count) over (partition by category) as total_category_revenue
+    from final_feature_engineering
+)
+
+select
+    *,
+    round(((avg_price * sales_count) / nullif(total_category_revenue, 0)) * 100 ::numeric, 4) as product_revenue_share_pct,
+    round(
+        (cumulative_category_revenue / nullif(total_category_revenue, 0)) * 100, 4
+    ) as pareto_revenue_pct,
+    case 
+        when (cumulative_category_revenue / nullif(total_category_revenue, 0)) <= 0.8
+        then True else False 
+    end as is_revenue_workhorse
+from pareto_analysis

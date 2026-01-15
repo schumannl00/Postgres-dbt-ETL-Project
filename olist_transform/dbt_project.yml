@@ -32,8 +32,10 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   olist_transform: # This must match the 'name:' at the top of this file
     staging:
-      +materialized: view      # Staging models are lightweight views
+      +materialized: view   
+  # Staging models are lightweight views
     intermediate:
       +materialized: ephemeral # These are "invisible" CTEs (optional)
     marts:
-      +materialized: table     # Fact and Dim tables are physical tables
+      +materialized: table
+    # Fact and Dim tables are physical tables
