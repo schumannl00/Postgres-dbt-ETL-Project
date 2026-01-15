@@ -62,7 +62,8 @@ docker-compose up --build
 ```
 Access the Dashboard: Once the logs indicate Streamlit is running, navigate to http://localhost:8501.
 
-📈 Key Analytical Features
+📈 Key Analytical Features  
+
 Unsupervised ML: Product Anomalies
 The pipeline includes a specialized Mart that applies machine learning (Isolation Forest) to identify products with unusual price-to-shipping-cost ratios or pricing outliers. This helps businesses identify potential shipping cost errors or data entry mistakes.
 
