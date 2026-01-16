@@ -9,8 +9,6 @@ models:
           - unique
           - not_null
 
-         
-
   - name: dim_products
     description: "Product dimension enriched with English category names and calculated volume."
     columns:
