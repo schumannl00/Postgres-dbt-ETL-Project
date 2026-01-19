@@ -108,3 +108,16 @@ models:
         tests:
           - not_null
           - unique 
+
+  - name: monthly_revenue_by_cat
+    description: "Monthly revenue aggregated by product category."
+    columns:
+      - name: revenue_month
+        tests:
+          - not_null
+      - name: product_category
+        tests:
+          - not_null
+      - name: monthly_revenue
+        tests:
+          - not_null
